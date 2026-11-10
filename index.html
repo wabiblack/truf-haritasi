@@ -38,7 +38,12 @@ const topo=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZo
 const uydu=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,attribution:'© Esri'});
 const sokak=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© OpenStreetMap © CARTO'});
 topo.addTo(map);
-L.control.layers({'Arazi':topo,'Uydu':uydu,'Sokak':sokak},null,{position:'topright'}).addTo(map);
+const ogm=L.tileLayer.wms('https://cbs.ogm.gov.tr/arcgis/services/YAYIN/MESCERE/MapServer/WmsServer?',{layers:'0',format:'image/png',transparent:true,opacity:0.6,attribution:'Meşcere © OGM'});
+let ogmHata=0,ogmOk=0;
+ogm.on('tileerror',()=>{ogmHata++;if(ogmHata===3&&!ogmOk)uyar('OGM meşcere katmanı yüklenemedi. Servis şu an cevap vermiyor ya da bu ağdan erişime kapalı.');});
+ogm.on('tileload',()=>{ogmOk++;});
+L.control.layers({'Arazi (topoğrafik)':topo,'Uydu':uydu,'Sokak':sokak},{'Orman meşcere (OGM)':ogm},{position:'topright'}).addTo(map);
+function uyar(t){const d=document.createElement('div');d.textContent=t;d.style.cssText='position:absolute;top:86px;left:10px;right:60px;z-index:1100;background:#a8443a;color:#fff;padding:8px 10px;border-radius:10px;font-size:13px';document.body.appendChild(d);setTimeout(()=>d.remove(),7000);}
 fetch('harita-renkleri.json').then(r=>r.json()).then(t=>{
   const d=document.getElementById('turler');
   for(const k in t){const e=document.createElement('div');e.className='tur';e.innerHTML='<img src="ikon/'+k+'.svg" alt="">'+t[k].turkce;d.appendChild(e);}
@@ -58,18 +63,19 @@ map.on('click',async e=>{
   const u='https://archive-api.open-meteo.com/v1/archive?latitude='+lat.toFixed(4)+'&longitude='+lng.toFixed(4)+'&start_date='+gunStr(bas)+'&end_date='+gunStr(bit)+'&daily=precipitation_sum,temperature_2m_mean,relative_humidity_2m_mean,pressure_msl_mean&timezone=Europe%2FIstanbul';
   const sz=map.getSize(), cp=map.latLngToContainerPoint(e.latlng); map.panBy([cp.x-sz.x/2, cp.y-sz.y*0.2]);
   try{
-    const r=await fetch(u); if(!r.ok) throw new Error(r.status);
+    const [r,er]=await Promise.all([fetch(u),fetch('https://api.open-meteo.com/v1/elevation?latitude='+lat.toFixed(4)+'&longitude='+lng.toFixed(4)).catch(()=>null)]); if(!r.ok) throw new Error(r.status);
+    let rakim=null; try{rakim=(await er.json()).elevation[0];}catch(_){}
     const j=await r.json(), dd=j.daily, n=dd.time.length;
     const s=k=>dd[k].slice(0,n), gun=dd.time.slice(0,n).map(x=>x.slice(5).split('-').reverse().join('.'));
     const y=s('precipitation_sum'),h=s('relative_humidity_2m_mean'),t=s('temperature_2m_mean'),p=s('pressure_msl_mean');
     charts.forEach(c=>c.destroy());charts=[];
     panel.innerHTML='<button id="kapat">Kapat</button><h3>📍 '+lat.toFixed(3)+', '+lng.toFixed(3)+' · son 90 gün</h3>'+
-    '<div class="grid"><div class="kutu"><span>Toplam yağış (90 gün)</span><b>'+f(top_(y))+' mm</b></div>'+
+    '<div class="grid"><div class="kutu"><span>Yükseklik</span><b>'+f(rakim)+' m</b></div><div class="kutu"><span>Toplam yağış (90 gün)</span><b>'+f(top_(y))+' mm</b></div>'+
     '<div class="kutu"><span>Son 30 gün yağış</span><b>'+f(top_(y.slice(-30)))+' mm</b></div>'+
     '<div class="kutu"><span>Ortalama nem</span><b>%'+f(ort(h))+'</b></div>'+
     '<div class="kutu"><span>Ortalama sıcaklık</span><b>'+f(ort(t),1)+' °C</b></div>'+
     '<div class="kutu"><span>Ortalama basınç</span><b>'+f(ort(p))+' hPa</b></div>'+
-    '<div class="kutu"><span>Yağışlı gün (≥1 mm)</span><b>'+y.filter(x=>x>=1).length+'</b></div></div>'+
+    '<div class="kutu"><span>Yağışlı gün (≥1 mm)</span><b>'+y.filter(x=>x>=1).length+'</b></div><div class="kutu"><span>Son 7 gün yağış</span><b>'+f(top_(y.slice(-7)))+' mm</b></div></div>'+
     '<canvas id="g1"></canvas><canvas id="g2"></canvas><canvas id="g3"></canvas><canvas id="g4"></canvas>'+
     '<div class="not">Kaynak: Open-Meteo, günlük model verisi ('+dd.time[0]+' – '+dd.time[n-1]+'). Trüf bölge bilgileri tablo onaylanınca eklenecek.</div>';
     document.getElementById('kapat').onclick=()=>{panel.innerHTML='Haritada bir yere dokun.';};
