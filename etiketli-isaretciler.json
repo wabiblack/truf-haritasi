@@ -1,0 +1,343 @@
+{
+ "_not": "Etiketli işaretçiler. Uç noktası (anchor) x=genişlik/2, y=142 px. Çift türlü işaretçi aynı noktada iki tür birlikte önerildiğinde kullanılır; sol yarı ilk tür, sağ yarı ikinci tür.",
+ "tek": {
+  "uncinatum": {
+   "dosya": "foto/etiketli/uncinatum.png",
+   "boyut": [
+    107,
+    176
+   ],
+   "anchor": [
+    53,
+    142
+   ],
+   "etiket": "Uncinatum"
+  },
+  "aestivum": {
+   "dosya": "foto/etiketli/aestivum.png",
+   "boyut": [
+    96,
+    176
+   ],
+   "anchor": [
+    48,
+    142
+   ],
+   "etiket": "Aestivum"
+  },
+  "brumale": {
+   "dosya": "foto/etiketli/brumale.png",
+   "boyut": [
+    96,
+    176
+   ],
+   "anchor": [
+    48,
+    142
+   ],
+   "etiket": "Brumale"
+  },
+  "borchii": {
+   "dosya": "foto/etiketli/borchii.png",
+   "boyut": [
+    96,
+    176
+   ],
+   "anchor": [
+    48,
+    142
+   ],
+   "etiket": "Borchii"
+  },
+  "magnatum": {
+   "dosya": "foto/etiketli/magnatum.png",
+   "boyut": [
+    106,
+    176
+   ],
+   "anchor": [
+    53,
+    142
+   ],
+   "etiket": "Magnatum"
+  },
+  "melanosporum": {
+   "dosya": "foto/etiketli/melanosporum.png",
+   "boyut": [
+    136,
+    176
+   ],
+   "anchor": [
+    68,
+    142
+   ],
+   "etiket": "Melanosporum"
+  },
+  "terfezia": {
+   "dosya": "foto/etiketli/terfezia.png",
+   "boyut": [
+    96,
+    176
+   ],
+   "anchor": [
+    48,
+    142
+   ],
+   "etiket": "Keme"
+  }
+ },
+ "ortak": {
+  "uncinatum+aestivum": {
+   "dosya": "foto/ortak/uncinatum+aestivum.png",
+   "boyut": [
+    195,
+    176
+   ],
+   "anchor": [
+    97,
+    142
+   ],
+   "etiket": "Uncinatum + Aestivum"
+  },
+  "uncinatum+brumale": {
+   "dosya": "foto/ortak/uncinatum+brumale.png",
+   "boyut": [
+    188,
+    176
+   ],
+   "anchor": [
+    94,
+    142
+   ],
+   "etiket": "Uncinatum + Brumale"
+  },
+  "uncinatum+borchii": {
+   "dosya": "foto/ortak/uncinatum+borchii.png",
+   "boyut": [
+    178,
+    176
+   ],
+   "anchor": [
+    89,
+    142
+   ],
+   "etiket": "Uncinatum + Borchii"
+  },
+  "uncinatum+magnatum": {
+   "dosya": "foto/ortak/uncinatum+magnatum.png",
+   "boyut": [
+    205,
+    176
+   ],
+   "anchor": [
+    102,
+    142
+   ],
+   "etiket": "Uncinatum + Magnatum"
+  },
+  "uncinatum+melanosporum": {
+   "dosya": "foto/ortak/uncinatum+melanosporum.png",
+   "boyut": [
+    235,
+    176
+   ],
+   "anchor": [
+    117,
+    142
+   ],
+   "etiket": "Uncinatum + Melanosporum"
+  },
+  "uncinatum+terfezia": {
+   "dosya": "foto/ortak/uncinatum+terfezia.png",
+   "boyut": [
+    167,
+    176
+   ],
+   "anchor": [
+    83,
+    142
+   ],
+   "etiket": "Uncinatum + Keme"
+  },
+  "aestivum+brumale": {
+   "dosya": "foto/ortak/aestivum+brumale.png",
+   "boyut": [
+    177,
+    176
+   ],
+   "anchor": [
+    88,
+    142
+   ],
+   "etiket": "Aestivum + Brumale"
+  },
+  "aestivum+borchii": {
+   "dosya": "foto/ortak/aestivum+borchii.png",
+   "boyut": [
+    167,
+    176
+   ],
+   "anchor": [
+    83,
+    142
+   ],
+   "etiket": "Aestivum + Borchii"
+  },
+  "aestivum+magnatum": {
+   "dosya": "foto/ortak/aestivum+magnatum.png",
+   "boyut": [
+    194,
+    176
+   ],
+   "anchor": [
+    97,
+    142
+   ],
+   "etiket": "Aestivum + Magnatum"
+  },
+  "aestivum+melanosporum": {
+   "dosya": "foto/ortak/aestivum+melanosporum.png",
+   "boyut": [
+    224,
+    176
+   ],
+   "anchor": [
+    112,
+    142
+   ],
+   "etiket": "Aestivum + Melanosporum"
+  },
+  "aestivum+terfezia": {
+   "dosya": "foto/ortak/aestivum+terfezia.png",
+   "boyut": [
+    157,
+    176
+   ],
+   "anchor": [
+    78,
+    142
+   ],
+   "etiket": "Aestivum + Keme"
+  },
+  "brumale+borchii": {
+   "dosya": "foto/ortak/brumale+borchii.png",
+   "boyut": [
+    160,
+    176
+   ],
+   "anchor": [
+    80,
+    142
+   ],
+   "etiket": "Brumale + Borchii"
+  },
+  "brumale+magnatum": {
+   "dosya": "foto/ortak/brumale+magnatum.png",
+   "boyut": [
+    187,
+    176
+   ],
+   "anchor": [
+    93,
+    142
+   ],
+   "etiket": "Brumale + Magnatum"
+  },
+  "brumale+melanosporum": {
+   "dosya": "foto/ortak/brumale+melanosporum.png",
+   "boyut": [
+    217,
+    176
+   ],
+   "anchor": [
+    108,
+    142
+   ],
+   "etiket": "Brumale + Melanosporum"
+  },
+  "brumale+terfezia": {
+   "dosya": "foto/ortak/brumale+terfezia.png",
+   "boyut": [
+    150,
+    176
+   ],
+   "anchor": [
+    75,
+    142
+   ],
+   "etiket": "Brumale + Keme"
+  },
+  "borchii+magnatum": {
+   "dosya": "foto/ortak/borchii+magnatum.png",
+   "boyut": [
+    177,
+    176
+   ],
+   "anchor": [
+    88,
+    142
+   ],
+   "etiket": "Borchii + Magnatum"
+  },
+  "borchii+melanosporum": {
+   "dosya": "foto/ortak/borchii+melanosporum.png",
+   "boyut": [
+    207,
+    176
+   ],
+   "anchor": [
+    103,
+    142
+   ],
+   "etiket": "Borchii + Melanosporum"
+  },
+  "borchii+terfezia": {
+   "dosya": "foto/ortak/borchii+terfezia.png",
+   "boyut": [
+    140,
+    176
+   ],
+   "anchor": [
+    70,
+    142
+   ],
+   "etiket": "Borchii + Keme"
+  },
+  "magnatum+melanosporum": {
+   "dosya": "foto/ortak/magnatum+melanosporum.png",
+   "boyut": [
+    234,
+    176
+   ],
+   "anchor": [
+    117,
+    142
+   ],
+   "etiket": "Magnatum + Melanosporum"
+  },
+  "magnatum+terfezia": {
+   "dosya": "foto/ortak/magnatum+terfezia.png",
+   "boyut": [
+    167,
+    176
+   ],
+   "anchor": [
+    83,
+    142
+   ],
+   "etiket": "Magnatum + Keme"
+  },
+  "melanosporum+terfezia": {
+   "dosya": "foto/ortak/melanosporum+terfezia.png",
+   "boyut": [
+    197,
+    176
+   ],
+   "anchor": [
+    98,
+    142
+   ],
+   "etiket": "Melanosporum + Keme"
+  }
+ }
+}

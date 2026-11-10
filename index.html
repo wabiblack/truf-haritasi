@@ -25,7 +25,7 @@ canvas{width:100%!important;height:140px!important;margin-top:6px}
 </style>
 </head>
 <body>
-<div id="bar"><b>🍄 Trüf Haritası</b> <small>· deneme</small> <a href="oneri.html" style="color:#f1d9a8;font-size:13px;margin-left:6px">Öneriler →</a><div id="turler"></div></div>
+<div id="bar"><b>🍄 Trüf Haritası</b> <small>· deneme</small> <a href="oneri.html?v=20261110c" style="color:#f1d9a8;font-size:13px;margin-left:6px">Öneriler →</a><div id="turler"></div></div>
 <div id="map"></div>
 <div id="panel">Haritada bir yere dokun; o noktanın son 90 günlük yağış, nem, sıcaklık ve basınç verisi çıkacak.</div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -47,7 +47,7 @@ const ormanTipi=new OrmanTipi('',{opacity:0.65,attribution:'Orman tipi © Copern
 const TB={kuzey:42.15833,guney:35.75833,bati:25.59167,dogu:44.89167,satir:768,sutun:2316};
 const ov=(k,kay)=>L.imageOverlay('toprak/'+k+'.png',[[TB.guney,TB.bati],[TB.kuzey,TB.dogu]],{opacity:0.75,attribution:kay});
 const FAO='Kireç, jips © FAO HWSD v2 (~1 km)',ISR='Toprak © ISRIC SoilGrids (5–15 cm)';
-const TK=[['kirec','Kireç (kalsiyum karbonat) %',FAO],['jips','Jips (kükürtlü mineral) %',FAO],['ph','Toprak pH',ISR],['kil','Kil %',ISR],['kum','Kum %',ISR],['oc','Organik karbon g/kg',ISR]];
+const TK=[['kirec','Kireç (kalsiyum karbonat) %',FAO],['jips','Jips (kükürtlü mineral) %',FAO],['ph','Toprak pH',ISR],['kil','Kil %',ISR],['kum','Kum %',ISR],['oc','Organik karbon %',ISR]];
 const TOPRAK={};TK.forEach(([k,ad,kay])=>TOPRAK[ad]=ov(k,kay));
 const kirecK=TOPRAK[TK[0][1]],jipsK=TOPRAK[TK[1][1]];
 L.control.layers({'Arazi (topoğrafik)':topo,'Uydu':uydu,'Sokak':sokak},Object.assign({'Orman meşcere (OGM)':ogm,'Geniş / iğne yapraklı orman (Copernicus)':ormanTipi},TOPRAK),{position:'topright',collapsed:true}).addTo(map);
