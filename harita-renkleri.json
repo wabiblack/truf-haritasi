@@ -72,5 +72,16 @@
     "secili_nokta": "#3D5A40",
     "tr_kaydi_yok_opaklik": 0.45,
     "not_": "TR kaydı olmayan türlerde (magnatum, melanosporum) bölge dolgusu taralı ve soluk gösterilsin."
+  },
+  "uncinatum": {
+    "latince": "Tuber uncinatum (T. aestivum sonbahar-kış formu)",
+    "turkce": "Burgonya trüfü",
+    "bolge_dolgu": "#B0346E",
+    "dolgu_opaklik": 0.35,
+    "bolge_cizgi": "#B0346E",
+    "cizgi_kalinlik": 1.5,
+    "tr_kaydi": true,
+    "ikon": "foto/ikon/uncinatum.png",
+    "isaretci": "foto/isaretci/uncinatum.png"
   }
 }

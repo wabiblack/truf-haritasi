@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Trüf Haritası – deneme</title>
+<title>Trüf Haritası – deneme</title><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#3D5A40"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="favicon-32.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 html,body{margin:0;height:100%;font-family:system-ui,sans-serif;background:#f4efe6}
@@ -25,7 +25,7 @@ canvas{width:100%!important;height:140px!important;margin-top:6px}
 </style>
 </head>
 <body>
-<div id="bar"><b>🍄 Trüf Haritası</b> <small>· deneme</small><div id="turler"></div></div>
+<div id="bar"><b>🍄 Trüf Haritası</b> <small>· deneme</small> <a href="oneri.html" style="color:#f1d9a8;font-size:13px;margin-left:6px">Öneriler →</a><div id="turler"></div></div>
 <div id="map"></div>
 <div id="panel">Haritada bir yere dokun; o noktanın son 90 günlük yağış, nem, sıcaklık ve basınç verisi çıkacak.</div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -42,11 +42,13 @@ const ogm=L.tileLayer.wms('https://cbs.ogm.gov.tr/arcgis/services/YAYIN/MESCERE/
 let ogmHata=0,ogmOk=0;
 ogm.on('tileerror',()=>{ogmHata++;if(ogmHata===3&&!ogmOk)uyar('OGM meşcere katmanı yüklenemedi. Servis şu an cevap vermiyor ya da bu ağdan erişime kapalı.');});
 ogm.on('tileload',()=>{ogmOk++;});
-L.control.layers({'Arazi (topoğrafik)':topo,'Uydu':uydu,'Sokak':sokak},{'Orman meşcere (OGM)':ogm},{position:'topright'}).addTo(map);
+const OrmanTipi=L.TileLayer.extend({getTileUrl(c){const z=this._getZoomForUrl?this._getZoomForUrl():c.z;const m=L.CRS.EPSG3857,s=256;const nw=m.project(map.unproject(L.point(c.x*s,c.y*s),c.z),c.z);const a=L.CRS.EPSG3857.pointToLatLng(L.point(c.x*s,c.y*s),c.z),b=L.CRS.EPSG3857.pointToLatLng(L.point((c.x+1)*s,(c.y+1)*s),c.z);const p1=L.CRS.EPSG3857.project(a),p2=L.CRS.EPSG3857.project(b);return 'https://image.discomap.eea.europa.eu/arcgis/rest/services/GioLandPublic/HRL_ForestType_2018/ImageServer/exportImage?bbox='+p1.x+','+p2.y+','+p2.x+','+p1.y+'&bboxSR=3857&imageSR=3857&size=256,256&format=png&f=image';}});
+const ormanTipi=new OrmanTipi('',{opacity:0.65,attribution:'Orman tipi © Copernicus HRL 2018'});
+L.control.layers({'Arazi (topoğrafik)':topo,'Uydu':uydu,'Sokak':sokak},{'Orman meşcere (OGM)':ogm,'Geniş / iğne yapraklı orman (Copernicus)':ormanTipi},{position:'topright'}).addTo(map);
 function uyar(t){const d=document.createElement('div');d.textContent=t;d.style.cssText='position:absolute;top:86px;left:10px;right:60px;z-index:1100;background:#a8443a;color:#fff;padding:8px 10px;border-radius:10px;font-size:13px';document.body.appendChild(d);setTimeout(()=>d.remove(),7000);}
 fetch('harita-renkleri.json').then(r=>r.json()).then(t=>{
   const d=document.getElementById('turler');
-  for(const k in t){const e=document.createElement('div');e.className='tur';e.innerHTML='<img src="ikon/'+k+'.svg" alt="">'+t[k].turkce;d.appendChild(e);}
+  for(const k in t){if(k[0]==='_')continue;const e=document.createElement('div');e.className='tur';e.innerHTML='<img src="fikon/'+k+'.png" alt="" style="border-radius:50%">'+t[k].turkce;d.appendChild(e);}
 });
 const panel=document.getElementById('panel');
 let m,charts=[];
@@ -85,6 +87,8 @@ map.on('click',async e=>{
     grafik('g4','line','Basınç (hPa)',{l:gun,v:p},'#6B4C8A');
   }catch(err){panel.innerHTML='Hava verisi alınamadı ('+err.message+'). Tekrar dokunmayı dene.';}
 });
+
+(()=>{const q=new URLSearchParams(location.search),la=parseFloat(q.get('lat')),lo=parseFloat(q.get('lon'));if(!isNaN(la)&&!isNaN(lo)){map.setView([la,lo],12);setTimeout(()=>map.fire('click',{latlng:L.latLng(la,lo)}),300);}})();
 </script>
 </body>
 </html>
