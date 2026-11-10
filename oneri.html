@@ -29,8 +29,8 @@ h3{margin:12px 12px 0;font-size:17px}.yuv{border-radius:50%;border:2px solid #ff
 const AY=new Date().getMonth()+1; // telefonun tarihi
 const AYAD=['','Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
 const TUR={
- uncinatum:{ad:'Burgonya trüfü (T. uncinatum)',not:'aestivum ile aynı tür, sonbahar-kış hasadı [5][9]',sezon:[8,12],sezonK:'Ağustos–Aralık, üretici kaynağı [10]; Ocak\'a uzayabilir [5]',ph:{tam:[7,99],yarim:null,k:'pH 7 üstü [9]'},agac:'meşe, fındık, kayın [9]',il:['Bolu','Düzce'],ilK:'(aestivum adıyla kaydedilmiş) [1]'},
- aestivum:{ad:'Yazlık siyah trüf (T. aestivum)',sezon:[6,8],sezonK:'Haziran–Ağustos, üretici kaynağı [10]',ph:{tam:[7,8],yarim:[6.6,7],k:'pH 7–8, hafif asidikte 6,6–7,3 [5]'},agac:'kayın, meşe [5]',il:['Bolu','Düzce'],ilK:'[1]'},
+ uncinatum:{ad:'Burgonya trüfü (T. uncinatum)',not:'aestivum ile aynı tür, sonbahar-kış hasadı [5][9]',sezon:[8,12],sezonK:'Ağustos–Aralık, üretici kaynağı [10]; Ocak\'a uzayabilir [5]',ph:{tam:[7,99],yarim:[6.6,7],k:'pH 7 üstü, 6,6–7 sınırda [S]'},kirec:true,iklim:true,agac:'meşe, fındık, kayın [9]',il:['Bolu','Düzce'],ilK:'(aestivum adıyla kaydedilmiş) [1]'},
+ aestivum:{ad:'Yazlık siyah trüf (T. aestivum)',sezon:[6,8],sezonK:'Haziran–Ağustos, üretici kaynağı [10]',ph:{tam:[7,99],yarim:[6.6,7],k:'pH 7 üstü, 6,6–7 sınırda [S]'},kirec:true,iklim:true,agac:'kayın, meşe [5]',il:['Bolu','Düzce'],ilK:'[1]'},
  brumale:{ad:'Kışlık siyah trüf (T. brumale)',sezon:[11,1],sezonK:'1 Kasım–30 Ocak, Romanya [5]',ph:null,agac:null,il:['Denizli','Niğde','Osmaniye','Samsun'],ilK:'[1]'},
  magnatum:{ad:'Beyaz trüf (T. magnatum)',sezon:[7,12],sezonK:'15 Temmuz–15 Aralık, Romanya [5]',kayitYok:true},
  borchii:{ad:'Bianchetto (T. borchii)',sezon:null},melanosporum:{ad:'Périgord (T. melanosporum)',sezon:null},terfezia:{ad:'Keme (Terfezia)',sezon:null}
@@ -41,10 +41,20 @@ function puanla(p,k){
   const t=TUR[k],n=[];let s=0,max=0;
   if(t.ph){max+=3;
     if(p.ph==null) n.push(['⚪','Toprak verisi alınamadı','SoilGrids']);
-    else if(p.ph>=t.ph.tam[0]&&p.ph<=t.ph.tam[1]){s+=3;n.push(['🟢','Toprak pH '+p.ph+', türün isteği '+t.ph.k,'SoilGrids, 5–15 cm'])}
-    else if(t.ph.yarim&&p.ph>=t.ph.yarim[0]&&p.ph<t.ph.yarim[1]){s+=2;n.push(['🟡','Toprak pH '+p.ph+', sınırda; türün isteği '+t.ph.k,'SoilGrids, 5–15 cm'])}
+    else if(p.ph>t.ph.tam[0]&&p.ph<=t.ph.tam[1]){s+=3;n.push(['🟢','Toprak pH '+p.ph+', türün isteği '+t.ph.k,'SoilGrids, 5–15 cm'])}
+    else if(t.ph.yarim&&p.ph>=t.ph.yarim[0]&&p.ph<=t.ph.yarim[1]){s+=2;n.push(['🟡','Toprak pH '+p.ph+', sınırda; türün isteği '+t.ph.k,'SoilGrids, 5–15 cm'])}
     else n.push(['🔴','Toprak pH '+p.ph+', türün isteği '+t.ph.k,'SoilGrids, 5–15 cm']);
   } else n.push(['⚪','Toprak isteği: tabloda kaynak yok, puanlanmadı','']);
+  if(t.kirec){max+=1;
+    if(p.kirec==null) n.push(['⚪','Toplam kireç: veri yok','FAO HWSD v2']);
+    else if(p.kirec>0){s+=1;n.push(['🟢','Toplam kireç %'+p.kirec+': kireçli toprak; tür kireçli toprak ister [S][5]','FAO HWSD v2, ~1 km, toplam kireç, aktif kireç değil'])}
+    else {s+=0.5;n.push(['🟡','Toplam kireç %0: sınırda; Polonya\'da %0,3 kireçli alanda da bulunmuş [5]','FAO HWSD v2, ~1 km, toplam kireç, aktif kireç değil'])}}
+  if(t.iklim){max+=2;
+    if(p.yagis365>=400&&p.yagis365<=1500){s+=1;n.push(['🟢','Son 12 ayda '+p.yagis365+' mm yağış; türün isteği yıllık 400–1500 mm [S]','Open-Meteo arşivi'])}
+    else n.push(['🔴','Son 12 ayda '+p.yagis365+' mm yağış; türün isteği yıllık 400–1500 mm [S]','Open-Meteo arşivi']);
+    if(p.sicaklik365>=6.8&&p.sicaklik365<=11.5){s+=1;n.push(['🟢','Son 12 ayın ortalama sıcaklığı '+p.sicaklik365+' °C; türün isteği 6,8–11,5 °C [S]','Open-Meteo arşivi'])}
+    else n.push(['🔴','Son 12 ayın ortalama sıcaklığı '+p.sicaklik365+' °C; türün isteği 6,8–11,5 °C [S]','Open-Meteo arşivi']);
+    n.push(['ℹ️','İklim eşikleri uzun yıllar ortalaması içindir; burada sadece son 12 ay kullanıldı','']);}
   if(t.agac){max+=2;
     if(p.genis==null) n.push(['⚪','Orman tipi verisi alınamadı','Copernicus']);
     else if(p.genis>=30){s+=2;n.push(['🟢','Çevresindeki 2,5 × 2,5 km alanın yüzde '+p.genis+' kadarı geniş yapraklı orman; konakları '+t.agac,'Copernicus Orman Tipi 2018'])}
@@ -81,7 +91,7 @@ fetch('oneri.json').then(r=>r.json()).then(d=>{D=d;
 });
 let isaret=[];
 function goster(k){const t=TUR[k];
-  document.getElementById('not').innerHTML='<b>'+t.ad+'</b> için öneriler. Puan sadece kaynağı olan ölçütlerden: toprak pH (3), geniş yapraklı orman (2), il kaydı (1). Eşikler taslak tür tablosu v0.3\'ten, tablo henüz onaylanmadı. İlk deneme alanı Sakarya, Düzce ve Bolu ('+D.noktalar.length+' nokta, 20 km aralıklı). Veri tarihi '+D.tarih+', hava '+D.aralik[0]+' – '+D.aralik[1]+'. Tahmindir, saha kontrolü gerekir.';
+  document.getElementById('not').innerHTML='<b>'+t.ad+'</b> için öneriler. Puan sadece kaynağı olan ölçütlerden: toprak pH (3), geniş yapraklı orman (2), toplam kireç (1), yıllık yağış (1), yıllık sıcaklık (1), il kaydı (1). Eşikler oluşum koşulları tablosundan ([S] Stobbe ve ark. 2013, [5] Romanya derlemesi); kullanıcı onayı bekliyor. İlk deneme alanı Sakarya, Düzce ve Bolu ('+D.noktalar.length+' nokta, 20 km aralıklı). Veri tarihi '+D.tarih+', hava '+D.aralik[0]+' – '+D.aralik[1]+'. Tahmindir, saha kontrolü gerekir.';
   isaret.forEach(m=>m.remove());isaret=[];const liste=document.getElementById('liste');liste.innerHTML='';
   const L2=D.noktalar.map(p=>({p,r:puanla(p,k)})).sort((a,b)=>b.r.s-a.r.s||(b.p.genis||0)-(a.p.genis||0)).slice(0,8);const b=[];
   L2.forEach((x,i)=>{const p=x.p,r=x.r,id='k'+i;b.push([p.lat,p.lon]);

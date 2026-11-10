@@ -20,7 +20,11 @@
    "nem": 69,
    "sicaklik": 16.7,
    "genis": 26,
-   "igne": 48
+   "igne": 48,
+   "yagis365": 702,
+   "sicaklik365": 12.3,
+   "kirec": 0.0,
+   "jips": 0.3
   },
   {
    "lat": 40.35,
@@ -37,7 +41,11 @@
    "nem": 74,
    "sicaklik": 17.9,
    "genis": 11,
-   "igne": 31
+   "igne": 31,
+   "yagis365": 880,
+   "sicaklik365": 13.9,
+   "kirec": 26.5,
+   "jips": 0.3
   },
   {
    "lat": 40.35,
@@ -54,7 +62,11 @@
    "nem": 77,
    "sicaklik": 14.9,
    "genis": 6,
-   "igne": 69
+   "igne": 69,
+   "yagis365": 749,
+   "sicaklik365": 10.7,
+   "kirec": 26.5,
+   "jips": 0.3
   },
   {
    "lat": 40.35,
@@ -71,7 +83,11 @@
    "nem": 77,
    "sicaklik": 14.0,
    "genis": 10,
-   "igne": 75
+   "igne": 75,
+   "yagis365": 859,
+   "sicaklik365": 9.9,
+   "kirec": 9.8,
+   "jips": 2.1
   },
   {
    "lat": 40.35,
@@ -88,7 +104,11 @@
    "nem": 72,
    "sicaklik": 13.4,
    "genis": 7,
-   "igne": 80
+   "igne": 80,
+   "yagis365": 856,
+   "sicaklik365": 9.2,
+   "kirec": 26.5,
+   "jips": 0.3
   },
   {
    "lat": 40.35,
@@ -105,7 +125,11 @@
    "nem": 69,
    "sicaklik": 15.7,
    "genis": 11,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 737,
+   "sicaklik365": 11.2,
+   "kirec": 26.5,
+   "jips": 0.3
   },
   {
    "lat": 40.35,
@@ -122,7 +146,11 @@
    "nem": 64,
    "sicaklik": 14.8,
    "genis": 14,
-   "igne": 16
+   "igne": 16,
+   "yagis365": 820,
+   "sicaklik365": 10.3,
+   "kirec": 0.0,
+   "jips": 0.3
   },
   {
    "lat": 40.55,
@@ -139,7 +167,11 @@
    "nem": 78,
    "sicaklik": 13.8,
    "genis": 79,
-   "igne": 16
+   "igne": 16,
+   "yagis365": 1474,
+   "sicaklik365": 9.9,
+   "kirec": 0.0,
+   "jips": 1.6
   },
   {
    "lat": 40.55,
@@ -156,7 +188,11 @@
    "nem": 82,
    "sicaklik": 15.1,
    "genis": 19,
-   "igne": 52
+   "igne": 52,
+   "yagis365": 1808,
+   "sicaklik365": 11.3,
+   "kirec": 0.0,
+   "jips": 1.6
   },
   {
    "lat": 40.55,
@@ -173,7 +209,11 @@
    "nem": 83,
    "sicaklik": 11.4,
    "genis": 79,
-   "igne": 17
+   "igne": 17,
+   "yagis365": 1572,
+   "sicaklik365": 7.5,
+   "kirec": 0.0,
+   "jips": 0.3
   },
   {
    "lat": 40.55,
@@ -190,7 +230,11 @@
    "nem": 86,
    "sicaklik": 13.2,
    "genis": 69,
-   "igne": 17
+   "igne": 17,
+   "yagis365": 1776,
+   "sicaklik365": 9.5,
+   "kirec": 0.0,
+   "jips": 1.6
   },
   {
    "lat": 40.55,
@@ -207,7 +251,11 @@
    "nem": 87,
    "sicaklik": 14.5,
    "genis": 70,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 1866,
+   "sicaklik365": 10.8,
+   "kirec": 0.0,
+   "jips": 1.6
   },
   {
    "lat": 40.55,
@@ -224,7 +272,11 @@
    "nem": 79,
    "sicaklik": 15.2,
    "genis": 75,
-   "igne": 10
+   "igne": 10,
+   "yagis365": 1015,
+   "sicaklik365": 10.9,
+   "kirec": 26.5,
+   "jips": 0.3
   },
   {
    "lat": 40.55,
@@ -241,7 +293,11 @@
    "nem": 82,
    "sicaklik": 12.0,
    "genis": 25,
-   "igne": 32
+   "igne": 32,
+   "yagis365": 1285,
+   "sicaklik365": 8.0,
+   "kirec": 26.5,
+   "jips": 0.3
   },
   {
    "lat": 40.55,
@@ -258,7 +314,11 @@
    "nem": 77,
    "sicaklik": 12.2,
    "genis": 15,
-   "igne": 60
+   "igne": 60,
+   "yagis365": 930,
+   "sicaklik365": 8.0,
+   "kirec": 9.8,
+   "jips": 2.1
   },
   {
    "lat": 40.55,
@@ -275,7 +335,11 @@
    "nem": 80,
    "sicaklik": 11.6,
    "genis": 26,
-   "igne": 48
+   "igne": 48,
+   "yagis365": 1123,
+   "sicaklik365": 7.8,
+   "kirec": 0.0,
+   "jips": 0.3
   },
   {
    "lat": 40.55,
@@ -292,7 +356,11 @@
    "nem": 72,
    "sicaklik": 8.9,
    "genis": 2,
-   "igne": 86
+   "igne": 86,
+   "yagis365": 1040,
+   "sicaklik365": 4.6,
+   "kirec": 0.0,
+   "jips": 0.3
   },
   {
    "lat": 40.55,
@@ -309,7 +377,11 @@
    "nem": 76,
    "sicaklik": 10.0,
    "genis": 1,
-   "igne": 90
+   "igne": 90,
+   "yagis365": 937,
+   "sicaklik365": 6.0,
+   "kirec": 0.0,
+   "jips": 0.3
   },
   {
    "lat": 40.55,
@@ -326,7 +398,11 @@
    "nem": 75,
    "sicaklik": 10.0,
    "genis": 1,
-   "igne": 93
+   "igne": 93,
+   "yagis365": 893,
+   "sicaklik365": 5.9,
+   "kirec": 0.0,
+   "jips": 0.3
   },
   {
    "lat": 40.55,
@@ -343,7 +419,11 @@
    "nem": 71,
    "sicaklik": 11.3,
    "genis": 32,
-   "igne": 38
+   "igne": 38,
+   "yagis365": 817,
+   "sicaklik365": 6.8,
+   "kirec": 0.0,
+   "jips": 0.3
   },
   {
    "lat": 40.75,
@@ -360,7 +440,11 @@
    "nem": 82,
    "sicaklik": 18.7,
    "genis": 0,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 1851,
+   "sicaklik365": 15.0,
+   "kirec": null,
+   "jips": null
   },
   {
    "lat": 40.75,
@@ -377,7 +461,11 @@
    "nem": 81,
    "sicaklik": 18.1,
    "genis": 9,
-   "igne": 4
+   "igne": 4,
+   "yagis365": 1757,
+   "sicaklik365": 14.8,
+   "kirec": 6.0,
+   "jips": 0.6
   },
   {
    "lat": 40.75,
@@ -394,7 +482,11 @@
    "nem": 83,
    "sicaklik": 16.5,
    "genis": 17,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 2057,
+   "sicaklik365": 13.0,
+   "kirec": 0.0,
+   "jips": 1.6
   },
   {
    "lat": 40.75,
@@ -411,7 +503,11 @@
    "nem": 84,
    "sicaklik": 16.0,
    "genis": 23,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 2083,
+   "sicaklik365": 12.3,
+   "kirec": 0.0,
+   "jips": 1.6
   },
   {
    "lat": 40.75,
@@ -428,7 +524,11 @@
    "nem": 81,
    "sicaklik": 16.3,
    "genis": 73,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 1856,
+   "sicaklik365": 12.8,
+   "kirec": 0.0,
+   "jips": 0.3
   },
   {
    "lat": 40.75,
@@ -445,7 +545,11 @@
    "nem": 86,
    "sicaklik": 13.1,
    "genis": 78,
-   "igne": 10
+   "igne": 10,
+   "yagis365": 1943,
+   "sicaklik365": 9.5,
+   "kirec": 0.0,
+   "jips": 0.3
   },
   {
    "lat": 40.75,
@@ -462,7 +566,11 @@
    "nem": 82,
    "sicaklik": 14.6,
    "genis": 1,
-   "igne": 1
+   "igne": 1,
+   "yagis365": 1552,
+   "sicaklik365": 10.6,
+   "kirec": 9.8,
+   "jips": 2.1
   },
   {
    "lat": 40.75,
@@ -479,7 +587,11 @@
    "nem": 74,
    "sicaklik": 14.6,
    "genis": 14,
-   "igne": 32
+   "igne": 32,
+   "yagis365": 1286,
+   "sicaklik365": 10.6,
+   "kirec": 0.0,
+   "jips": 1.6
   },
   {
    "lat": 40.75,
@@ -496,7 +608,11 @@
    "nem": 78,
    "sicaklik": 12.4,
    "genis": 27,
-   "igne": 11
+   "igne": 11,
+   "yagis365": 1152,
+   "sicaklik365": 8.3,
+   "kirec": 26.5,
+   "jips": 0.3
   },
   {
    "lat": 40.75,
@@ -513,7 +629,11 @@
    "nem": 78,
    "sicaklik": 12.3,
    "genis": 1,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 1017,
+   "sicaklik365": 8.1,
+   "kirec": 0.0,
+   "jips": 1.6
   },
   {
    "lat": 40.75,
@@ -530,7 +650,11 @@
    "nem": 74,
    "sicaklik": 12.2,
    "genis": 20,
-   "igne": 14
+   "igne": 14,
+   "yagis365": 938,
+   "sicaklik365": 7.8,
+   "kirec": 0.0,
+   "jips": 1.6
   },
   {
    "lat": 40.95,
@@ -547,7 +671,11 @@
    "nem": 80,
    "sicaklik": 17.5,
    "genis": 69,
-   "igne": 1
+   "igne": 1,
+   "yagis365": 1345,
+   "sicaklik365": 13.8,
+   "kirec": 0.0,
+   "jips": 1.6
   },
   {
    "lat": 40.95,
@@ -564,7 +692,11 @@
    "nem": 81,
    "sicaklik": 17.9,
    "genis": 20,
-   "igne": 5
+   "igne": 5,
+   "yagis365": 1428,
+   "sicaklik365": 14.4,
+   "kirec": 0.0,
+   "jips": 1.6
   },
   {
    "lat": 40.95,
@@ -581,7 +713,11 @@
    "nem": 83,
    "sicaklik": 15.3,
    "genis": 73,
-   "igne": 6
+   "igne": 6,
+   "yagis365": 1946,
+   "sicaklik365": 11.8,
+   "kirec": 0.0,
+   "jips": 1.6
   },
   {
    "lat": 40.95,
@@ -598,7 +734,11 @@
    "nem": 86,
    "sicaklik": 15.3,
    "genis": 9,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 1630,
+   "sicaklik365": 11.7,
+   "kirec": 0.0,
+   "jips": 1.6
   },
   {
    "lat": 40.95,
@@ -615,7 +755,11 @@
    "nem": 84,
    "sicaklik": 15.8,
    "genis": 4,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 1807,
+   "sicaklik365": 12.3,
+   "kirec": 0.0,
+   "jips": 0.0
   },
   {
    "lat": 40.95,
@@ -632,7 +776,11 @@
    "nem": 83,
    "sicaklik": 16.3,
    "genis": 26,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 1774,
+   "sicaklik365": 12.9,
+   "kirec": 0.0,
+   "jips": 0.0
   },
   {
    "lat": 40.95,
@@ -649,7 +797,11 @@
    "nem": 83,
    "sicaklik": 12.8,
    "genis": 72,
-   "igne": 7
+   "igne": 7,
+   "yagis365": 1771,
+   "sicaklik365": 9.2,
+   "kirec": 26.5,
+   "jips": 0.3
   },
   {
    "lat": 40.95,
@@ -666,7 +818,11 @@
    "nem": 79,
    "sicaklik": 15.4,
    "genis": 98,
-   "igne": 2
+   "igne": 2,
+   "yagis365": 1467,
+   "sicaklik365": 11.6,
+   "kirec": 26.5,
+   "jips": 0.3
   },
   {
    "lat": 40.95,
@@ -683,7 +839,11 @@
    "nem": 81,
    "sicaklik": 14.7,
    "genis": 69,
-   "igne": 31
+   "igne": 31,
+   "yagis365": 1276,
+   "sicaklik365": 10.9,
+   "kirec": 26.5,
+   "jips": 0.3
   },
   {
    "lat": 40.95,
@@ -700,7 +860,11 @@
    "nem": 82,
    "sicaklik": 14.2,
    "genis": 17,
-   "igne": 65
+   "igne": 65,
+   "yagis365": 1405,
+   "sicaklik365": 10.4,
+   "kirec": 0.0,
+   "jips": 0.0
   },
   {
    "lat": 41.15,
@@ -717,7 +881,11 @@
    "nem": 77,
    "sicaklik": 19.3,
    "genis": 46,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 1267,
+   "sicaklik365": 15.1,
+   "kirec": 0.0,
+   "jips": 0.3
   },
   {
    "lat": 41.15,
@@ -734,7 +902,11 @@
    "nem": 78,
    "sicaklik": 19.2,
    "genis": 0,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 1363,
+   "sicaklik365": 15.2,
+   "kirec": null,
+   "jips": null
   },
   {
    "lat": 41.15,
@@ -751,7 +923,11 @@
    "nem": 78,
    "sicaklik": 19.4,
    "genis": 0,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 1527,
+   "sicaklik365": 15.5,
+   "kirec": null,
+   "jips": null
   },
   {
    "lat": 41.15,
@@ -768,7 +944,11 @@
    "nem": 82,
    "sicaklik": 19.1,
    "genis": 0,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 1868,
+   "sicaklik365": 15.2,
+   "kirec": null,
+   "jips": null
   },
   {
    "lat": 41.15,
@@ -785,7 +965,15 @@
    "nem": 82,
    "sicaklik": 18.8,
    "genis": 0,
-   "igne": 0
+   "igne": 0,
+   "yagis365": 1827,
+   "sicaklik365": 15.2,
+   "kirec": null,
+   "jips": null
   }
+ ],
+ "yillik_aralik": [
+  "2025-11-10",
+  "2026-11-09"
  ]
 }
