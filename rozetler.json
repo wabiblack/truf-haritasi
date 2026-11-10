@@ -1,0 +1,53 @@
+{
+  "sezonda": {
+    "metin": "Sezonda",
+    "zemin": "#3D5A40",
+    "yazi": "#FFFFFF",
+    "svg": "rozet/sezonda.svg",
+    "png": "rozet/sezonda.png"
+  },
+  "sezon-basliyor": {
+    "metin": "Sezon başlıyor",
+    "zemin": "#C9A24A",
+    "yazi": "#2B2A24",
+    "svg": "rozet/sezon-basliyor.svg",
+    "png": "rozet/sezon-basliyor.png"
+  },
+  "sezon-bitiyor": {
+    "metin": "Sezon bitiyor",
+    "zemin": "#B5523B",
+    "yazi": "#FFFFFF",
+    "svg": "rozet/sezon-bitiyor.svg",
+    "png": "rozet/sezon-bitiyor.png"
+  },
+  "sezon-disi": {
+    "metin": "Sezon dışı",
+    "zemin": "#D9D2C0",
+    "yazi": "#5D574A",
+    "svg": "rozet/sezon-disi.svg",
+    "png": "rozet/sezon-disi.png"
+  },
+  "sezon-bilgisi-yok": {
+    "metin": "Sezon bilgisi yok",
+    "zemin": "#EFE9DC",
+    "yazi": "#7A7364",
+    "svg": "rozet/sezon-bilgisi-yok.svg",
+    "png": "rozet/sezon-bilgisi-yok.png"
+  },
+  "tr-kayit-yok": {
+    "metin": "Türkiye'de kayıt yok",
+    "zemin": "#F2E4DF",
+    "yazi": "#B5523B",
+    "svg": "rozet/tr-kayit-yok.svg",
+    "png": "rozet/tr-kayit-yok.png"
+  },
+  "_kurallar": {
+    "sezonda": "bugün sezon aralığında ve bitişe 14 günden fazla var",
+    "sezon-basliyor": "sezon başlangıcına 30 gün veya daha az kaldı",
+    "sezon-bitiyor": "sezonda ve bitişe 14 gün veya daha az kaldı",
+    "sezon-disi": "sezon dışında ve başlangıca 30 günden fazla var",
+    "sezon-bilgisi-yok": "tabloda sezon 'Kaynak yok'",
+    "tr-kayit-yok": "Türkiye'de doğal kaydı yok (magnatum, melanosporum); sezon rozetinin yanında gösterilir",
+    "not": "Eşik günleri (14/30) Patron tarafından onaylandı (2026-11-10)."
+  }
+}

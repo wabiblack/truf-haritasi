@@ -18,87 +18,126 @@ li{font-size:14px;padding:5px 0;border-top:1px solid #eee}
 .k{font-size:11px;color:#8a8076}
 button{background:#3b3127;color:#fff;border:0;border-radius:8px;padding:6px 10px;margin-top:8px}
 h3{margin:12px 12px 0;font-size:17px}.yuv{border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px #0006}a{color:#6b4a2b}
+#secici{display:flex;gap:6px;overflow-x:auto;padding:10px;background:#efe9dc}#secici button{flex:none;margin:0;background:#fff;color:#2b2620;border:2px solid #ccc;border-radius:18px;padding:5px 10px;font-size:13px;display:flex;align-items:center;gap:5px}#secici button img{width:22px;height:22px;border-radius:50%}#secici button.on{border-color:#3D5A40;background:#3D5A40;color:#fff}#secici button.soluk{opacity:.5}.rz{display:inline-block;font-size:11px;padding:2px 7px;border-radius:9px;margin-left:4px;vertical-align:middle}.soluk{opacity:.55}
 </style></head><body>
 <header><b>🍄 Öneriler · deneme</b><a href="./">← Harita</a></header>
-<div id="simdi" style="padding:2px 0"></div><div id="map"></div>
+<div id="secici"></div><div id="simdi"></div><div id="map"></div>
 <div class="not" id="not"></div>
 <div id="liste"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-// Kaynak: /workspace/truf/turler-taslak.md v0.3 (kullanıcı onayı bekliyor). [n] tablodaki kaynak numarası.
-const AY=new Date().getMonth()+1; // telefonun tarihi
+// Puanlama kaynağı: /workspace/truf/olusum-kosullari.md (Denetçi, 10 Kas 2026). Köşeli parantez = kaynak etiketi.
+const BUGUN=new Date(); // telefonun tarihi
 const AYAD=['','Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const KAYIT_AEST=['Antalya','Artvin','Aydın','Bolu','Burdur','Denizli','Düzce','Hatay','İstanbul','İzmir','Kırklareli','Konya','Muğla','Ordu','Osmaniye'];
+const IKLIM_S={yag:[400,1500],sic:[6.8,11.5],k:'[S]'};
 const TUR={
- uncinatum:{ad:'Burgonya trüfü (T. uncinatum)',not:'aestivum ile aynı tür, sonbahar-kış hasadı [5][9]',sezon:[8,12],sezonK:'Ağustos–Aralık, üretici kaynağı [10]; Ocak\'a uzayabilir [5]',ph:{tam:[7,99],yarim:[6.6,7],k:'pH 7 üstü, 6,6–7 sınırda [S]'},kirec:true,iklim:true,agac:'meşe, fındık, kayın [9]',il:['Bolu','Düzce'],ilK:'(aestivum adıyla kaydedilmiş) [1]'},
- aestivum:{ad:'Yazlık siyah trüf (T. aestivum)',sezon:[6,8],sezonK:'Haziran–Ağustos, üretici kaynağı [10]',ph:{tam:[7,99],yarim:[6.6,7],k:'pH 7 üstü, 6,6–7 sınırda [S]'},kirec:true,iklim:true,agac:'kayın, meşe [5]',il:['Bolu','Düzce'],ilK:'[1]'},
- brumale:{ad:'Kışlık siyah trüf (T. brumale)',sezon:[11,1],sezonK:'1 Kasım–30 Ocak, Romanya [5]',ph:null,agac:null,il:['Denizli','Niğde','Osmaniye','Samsun'],ilK:'[1]'},
- magnatum:{ad:'Beyaz trüf (T. magnatum)',sezon:[7,12],sezonK:'15 Temmuz–15 Aralık, Romanya [5]',kayitYok:true},
- borchii:{ad:'Bianchetto (T. borchii)',sezon:null},melanosporum:{ad:'Périgord (T. melanosporum)',sezon:null},terfezia:{ad:'Keme (Terfezia)',sezon:null}
+ uncinatum:{ad:'Burgonya trüfü',lat:'T. uncinatum',not:'aestivum ile aynı tür, sonbahar-kış hasadı [S]',sezon:[8,1,12,31],sezonK:'Ağustos–Aralık [Ü]; Ocak\'a uzayabilir [5]',
+   ph:{tam:[7.01,14],yarim:[6.6,7],k:'pH 7 üstü, 6,6–7 sınırda [S][5]'},kirec:'ister',iklim:IKLIM_S,agac:{tip:'genis',k:'meşe, fındık, kayın [S]'},il:KAYIT_AEST,ilK:'aestivum adıyla kayıtlı [1]'},
+ aestivum:{ad:'Yazlık siyah trüf',lat:'T. aestivum',sezon:[6,1,8,31],sezonK:'Haziran–Ağustos [Ü]',
+   ph:{tam:[7.01,14],yarim:[6.6,7],k:'pH 7 üstü, 6,6–7 sınırda [S][5]'},kirec:'ister',iklim:IKLIM_S,agac:{tip:'genis',k:'meşe, fındık, kayın [S]'},il:KAYIT_AEST,ilK:'[1]'},
+ brumale:{ad:'Kışlık siyah trüf',lat:'T. brumale',sezon:[11,1,1,30],sezonK:'1 Kasım–30 Ocak [5]',
+   ph:{tam:[6.6,8],yarim:[6,6.6],k:'nötr–hafif alkalin [UPM]; 7 altına inebilir (zayıf kaynak)'},kirec:'az',agac:{tip:'genis',k:'ıhlamur, meşe [FEMS], kestane [UPM]'},il:['Denizli','Niğde','Osmaniye','Samsun'],ilK:'[1]'},
+ borchii:{ad:'Bianchetto',lat:'T. borchii',sezon:[1,15,4,30],sezonK:'15 Ocak–30 Nisan [Ü]',
+   ph:{tam:[7,8],yarim:[6,7],k:'çoğunlukla 7–8, hafif asidik 6–7 de olur [Z]'},kirec:'ister',iklimY:{yag:[600,1600],k:'[Ü]'},agac:{tip:'her',k:'meşe, fındık, kavak, ıhlamur, kestane, çam, sedir [Z]'},il:['Aydın','Denizli','Kahramanmaraş','Muğla','Samsun','Tekirdağ'],ilK:'[1]'},
+ magnatum:{ad:'Beyaz trüf',lat:'T. magnatum',sezon:[7,15,12,15],sezonK:'15 Temmuz–15 Aralık, Romanya [5]',kayitYok:true,
+   ph:{tam:[7.8,8.4],yarim:null,k:'İtalya\'da pH 7,8–8,4 [5]'},kirec:'ister',agac:{tip:'genis',k:'meşe ve karışık meşcere [5]'}},
+ melanosporum:{ad:'Périgord trüfü',lat:'T. melanosporum',sezon:[12,1,3,31],sezonK:'Aralık–Mart [Ü]',kayitYok:true,
+   ph:{tam:[7.01,14],yarim:null,k:'alkalin, İtalya ort. pH 7,9 [5]'},kirec:'ister',iklimY:{yag:[485,1500],k:'[TR][UZ]'},rakim:[600,1200]},
+ terfezia:{ad:'Keme (çöl trüfü)',lat:'Terfezia boudieri',sezon:[3,1,5,31],sezonK:'Mart–Mayıs [AK]',
+   ph:{tam:[7.01,14],yarim:[6.6,7],k:'bazik; Elazığ ölçümü pH 7,12 [AK]'},kirec:'ister',kurak:true,il:['Batman','Denizli','Diyarbakır','Elazığ','Gaziantep','Karaman','Malatya','Niğde','Şanlıurfa','Adana','Aksaray','Konya','Yozgat'],ilK:'[2]',
+   konakNot:'Konak ağaç değil, Helianthemum (otsu bitki) [AK]; bu bitkinin haritası yok, puanlanmadı'}
 };
-function sezonda(t){if(!t.sezon)return null;const[a,b]=t.sezon;return a<=b?(AY>=a&&AY<=b):(AY>=a||AY<=b);}
-function kalanGun(t){const[a,b]=t.sezon;const n=new Date();let y=n.getFullYear();if(a>b&&AY>=a)y++;const son=new Date(y,b,0);return Math.max(0,Math.ceil((son-n)/864e5));}
+const SIRA=['uncinatum','brumale','aestivum','borchii','magnatum','melanosporum','terfezia'];
+function gunFark(a,b){return Math.round((b-a)/864e5);}
+function sezonBilgi(t){
+  if(!t.sezon)return{dur:'sezon-bilgisi-yok'};
+  const[am,ad,bm,bd]=t.sezon,y=BUGUN.getFullYear(),bugun=new Date(y,BUGUN.getMonth(),BUGUN.getDate());
+  for(const yy of [y-1,y,y+1]){const bas=new Date(yy,am-1,ad);let son=new Date(yy,bm-1,bd);if(son<bas)son=new Date(yy+1,bm-1,bd);
+    if(bugun>=bas&&bugun<=son){const k=gunFark(bugun,son);return{dur:k<=14?'sezon-bitiyor':'sezonda',kalan:k,gecen:gunFark(bas,bugun),top:gunFark(bas,son)};}}
+  let enYakin=1e9;for(const yy of [y,y+1]){const bas=new Date(yy,am-1,ad);const f=gunFark(bugun,bas);if(f>0&&f<enYakin)enYakin=f;}
+  return{dur:enYakin<=30?'sezon-basliyor':'sezon-disi',baslamaya:enYakin};
+}
+const sezonda=t=>['sezonda','sezon-bitiyor'].includes(sezonBilgi(t).dur);
+let RZ={};
+function rozet(k){const r=RZ[k];return r?'<span class="rz" style="background:'+r.zemin+';color:'+r.yazi+'">'+r.metin+'</span>':'';}
 function puanla(p,k){
   const t=TUR[k],n=[];let s=0,max=0;
+  const ekle=(ik,m,kay)=>n.push([ik,m,kay||'']);
   if(t.ph){max+=3;
-    if(p.ph==null) n.push(['⚪','Toprak verisi alınamadı','SoilGrids']);
-    else if(p.ph>t.ph.tam[0]&&p.ph<=t.ph.tam[1]){s+=3;n.push(['🟢','Toprak pH '+p.ph+', türün isteği '+t.ph.k,'SoilGrids, 5–15 cm'])}
-    else if(t.ph.yarim&&p.ph>=t.ph.yarim[0]&&p.ph<=t.ph.yarim[1]){s+=2;n.push(['🟡','Toprak pH '+p.ph+', sınırda; türün isteği '+t.ph.k,'SoilGrids, 5–15 cm'])}
-    else n.push(['🔴','Toprak pH '+p.ph+', türün isteği '+t.ph.k,'SoilGrids, 5–15 cm']);
-  } else n.push(['⚪','Toprak isteği: tabloda kaynak yok, puanlanmadı','']);
-  if(t.kirec){max+=1;
-    if(p.kirec==null) n.push(['⚪','Toplam kireç: veri yok','FAO HWSD v2']);
-    else if(p.kirec>0){s+=1;n.push(['🟢','Toplam kireç %'+p.kirec+': kireçli toprak; tür kireçli toprak ister [S][5]','FAO HWSD v2, ~1 km, toplam kireç, aktif kireç değil'])}
-    else {s+=0.5;n.push(['🟡','Toplam kireç %0: sınırda; Polonya\'da %0,3 kireçli alanda da bulunmuş [5]','FAO HWSD v2, ~1 km, toplam kireç, aktif kireç değil'])}}
-  if(t.iklim){max+=2;
-    if(p.yagis365>=400&&p.yagis365<=1500){s+=1;n.push(['🟢','Son 12 ayda '+p.yagis365+' mm yağış; türün isteği yıllık 400–1500 mm [S]','Open-Meteo arşivi'])}
-    else n.push(['🔴','Son 12 ayda '+p.yagis365+' mm yağış; türün isteği yıllık 400–1500 mm [S]','Open-Meteo arşivi']);
-    if(p.sicaklik365>=6.8&&p.sicaklik365<=11.5){s+=1;n.push(['🟢','Son 12 ayın ortalama sıcaklığı '+p.sicaklik365+' °C; türün isteği 6,8–11,5 °C [S]','Open-Meteo arşivi'])}
-    else n.push(['🔴','Son 12 ayın ortalama sıcaklığı '+p.sicaklik365+' °C; türün isteği 6,8–11,5 °C [S]','Open-Meteo arşivi']);
-    n.push(['ℹ️','İklim eşikleri uzun yıllar ortalaması içindir; burada sadece son 12 ay kullanıldı','']);}
+    if(p.ph==null) ekle('⚪','Toprak verisi alınamadı','SoilGrids');
+    else if(p.ph>=t.ph.tam[0]&&p.ph<=t.ph.tam[1]){s+=3;ekle('🟢','Toprak pH '+p.ph+' · türün isteği: '+t.ph.k,'SoilGrids, 5–15 cm')}
+    else if(t.ph.yarim&&p.ph>=t.ph.yarim[0]&&p.ph<=t.ph.yarim[1]){s+=1.5;ekle('🟡','Toprak pH '+p.ph+', sınırda · türün isteği: '+t.ph.k,'SoilGrids, 5–15 cm')}
+    else ekle('🔴','Toprak pH '+p.ph+' · türün isteği: '+t.ph.k,'SoilGrids, 5–15 cm');}
+  if(t.kirec==='ister'){max+=1;
+    if(p.kirec==null) ekle('⚪','Toplam kireç: veri yok','FAO HWSD v2');
+    else if(p.kirec>0){s+=1;ekle('🟢','Toplam kireç %'+p.kirec+': kireçli toprak, tür kireçli toprak ister','FAO HWSD v2, ~1 km, aktif kireç değil')}
+    else{s+=0.5;ekle('🟡','Toplam kireç %0: sınırda; aestivum Polonya\'da %0,3 kireçte de bulunmuş [5]','FAO HWSD v2, ~1 km, aktif kireç değil')}}
+  else if(t.kirec==='az'&&p.kirec!=null) ekle('ℹ️','Toplam kireç %'+p.kirec+'; tür az kireçli toprakta da olur [UPM], puana katılmadı','FAO HWSD v2');
+  const yag=t.iklim?t.iklim.yag:(t.iklimY?t.iklimY.yag:null),yk=t.iklim?t.iklim.k:(t.iklimY?t.iklimY.k:'');
+  if(yag){max+=1;
+    if(p.yagis365>=yag[0]&&p.yagis365<=yag[1]){s+=1;ekle('🟢','Son 12 ayda '+p.yagis365+' mm yağış · istek yıllık '+yag[0]+'–'+yag[1]+' mm '+yk,'Open-Meteo')}
+    else ekle('🔴','Son 12 ayda '+p.yagis365+' mm yağış · istek yıllık '+yag[0]+'–'+yag[1]+' mm '+yk,'Open-Meteo');}
+  if(t.iklim){max+=1;const c=t.iklim.sic;
+    if(p.sicaklik365>=c[0]&&p.sicaklik365<=c[1]){s+=1;ekle('🟢','Son 12 ay ort. sıcaklık '+p.sicaklik365+' °C · istek '+c[0]+'–'+c[1]+' °C [S]','Open-Meteo')}
+    else ekle('🔴','Son 12 ay ort. sıcaklık '+p.sicaklik365+' °C · istek '+c[0]+'–'+c[1]+' °C [S]','Open-Meteo');}
+  if(t.rakim){max+=1;
+    if(p.rakim>=t.rakim[0]&&p.rakim<=t.rakim[1]){s+=1;ekle('🟢','Rakım '+p.rakim+' m · İspanya\'da çoğu 600–1200 m [TR]','Open-Meteo')}
+    else ekle('🔴','Rakım '+p.rakim+' m · İspanya\'da çoğu 600–1200 m [TR]','Open-Meteo');}
+  if(t.kurak){max+=1;
+    if(p.yagis365<=500){s+=1;ekle('🟢','Son 12 ayda '+p.yagis365+' mm yağış: kurak-yarı kurak sayılabilir · tür yarı kurak bölgede yaşar [AK]','Open-Meteo; 500 mm sınırı yaklaşık, kaynakta sayı yok')}
+    else ekle('🔴','Son 12 ayda '+p.yagis365+' mm yağış: yarı kurak değil · tür yarı kurak bölgede yaşar [AK]','Open-Meteo; 500 mm sınırı yaklaşık, kaynakta sayı yok');}
   if(t.agac){max+=2;
-    if(p.genis==null) n.push(['⚪','Orman tipi verisi alınamadı','Copernicus']);
-    else if(p.genis>=30){s+=2;n.push(['🟢','Çevresindeki 2,5 × 2,5 km alanın yüzde '+p.genis+' kadarı geniş yapraklı orman; konakları '+t.agac,'Copernicus Orman Tipi 2018'])}
-    else if(p.genis>=10){s+=1;n.push(['🟡','Çevrenin yüzde '+p.genis+' kadarı geniş yapraklı orman, az; konakları '+t.agac,'Copernicus Orman Tipi 2018'])}
-    else n.push(['🔴','Çevrede geniş yapraklı orman çok az (%'+p.genis+'), iğne yapraklı %'+p.igne+'; konakları '+t.agac,'Copernicus Orman Tipi 2018']);
-    n.push(['ℹ️','Uydu verisi ağacın meşe mi kayın mı olduğunu ayırmıyor, sadece geniş/iğne yapraklıyı ayırıyor','']);
-  } else n.push(['⚪','Konak ağaç: tabloda kaynak yok, puanlanmadı','']);
+    const g=p.genis,i=p.igne,v=t.agac.tip==='her'?(g+i):g,ad=t.agac.tip==='her'?'orman':'geniş yapraklı orman';
+    if(g==null) ekle('⚪','Orman tipi verisi alınamadı','Copernicus');
+    else if(v>=30){s+=2;ekle('🟢','Çevrenin yüzde '+v+' kadarı '+ad+' · konaklar: '+t.agac.k,'Copernicus Orman Tipi 2018, 2,5×2,5 km')}
+    else if(v>=10){s+=1;ekle('🟡','Çevrenin yüzde '+v+' kadarı '+ad+', az · konaklar: '+t.agac.k,'Copernicus Orman Tipi 2018')}
+    else ekle('🔴','Çevrede '+ad+' çok az (yüzde '+v+') · konaklar: '+t.agac.k,'Copernicus Orman Tipi 2018');}
+  else if(t.konakNot) ekle('⚪',t.konakNot,'');
+  else ekle('⚪','Konak ağaç: akademik kaynak yok, puanlanmadı','');
   if(t.il){max+=1;
-    if(t.il.includes(p.il)){s+=1;n.push(['🟢',p.il+' ilinde kayıt var '+t.ilK,'Türkiye trüf listesi'])}
-    else n.push(['🟡',p.il+' ilinde kayıt yok '+t.ilK,'Türkiye trüf listesi']);}
-  n.push([sezonda(t)?'🟢':'🔴',AYAD[AY]+(sezonda(t)?' sezonun içinde':' sezon dışı')+' ('+t.sezonK+')','']);
-  n.push(['⚪','Kireç ve kükürt: veri yok, puana katılmadı','Ücretsiz Türkiye haritası bulunamadı']);
-  n.push(['ℹ️','Son 90 gün '+p.yagis90+' mm yağış (son 30 gün '+p.yagis30+' mm), nem %'+p.nem+', ort. '+p.sicaklik+' °C. 90 günlük yağış için tabloda eşik yok, puana katılmadı.','Open-Meteo arşivi']);
-  n.push(['ℹ️','Rakım '+p.rakim+' m; tabloda eşik yok, puana katılmadı.','Open-Meteo']);
-  if(p.kil!=null) n.push(['ℹ️','Kil %'+p.kil+', kum %'+p.kum+', organik karbon '+p.oc+' g/kg; tabloda eşik yok, puana katılmadı.','SoilGrids']);
-  return {s,max,n};
+    if(t.il.includes(p.il)){s+=1;ekle('🟢',p.il+' ilinde kayıt var '+t.ilK,'Türkiye trüf listesi')}
+    else ekle('🟡',p.il+' ilinde kayıt yok '+t.ilK,'Türkiye trüf listesi');}
+  else if(t.kayitYok) ekle('⚠️','Türkiye\'de doğal kaydı yok','[2]');
+  const sb=sezonBilgi(t);ekle(sezonda(t)?'🟢':'🔴',AYAD[BUGUN.getMonth()+1]+': '+(RZ[sb.dur]?RZ[sb.dur].metin.toLowerCase():'')+' ('+t.sezonK+')','');
+  ekle('ℹ️','Son 90 gün '+p.yagis90+' mm yağış (son 30 gün '+p.yagis30+' mm), nem %'+p.nem+'; bunun için kaynakta eşik yok','Open-Meteo');
+  if(!t.rakim) ekle('ℹ️','Rakım '+p.rakim+' m; bu tür için eşik yok','Open-Meteo');
+  if(p.kil!=null) ekle('ℹ️','Kil %'+p.kil+', kum %'+p.kum+', organik karbon '+p.oc+' g/kg; eşik yok','SoilGrids');
+  if(p.jips!=null) ekle('ℹ️','Jips (kükürtlü mineral) %'+p.jips+'; eşik yok','FAO HWSD v2');
+  ekle('ℹ️','İklim eşikleri uzun yıllar ortalaması içindir; burada son 12 ay kullanıldı','');
+  return{s:Math.round(s*10)/10,max,n};
 }
 const map=L.map('map',{zoomSnap:0.25});
 L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'© OpenTopoMap, © OSM'}).addTo(map);
-let D;
-fetch('oneri.json').then(r=>r.json()).then(d=>{D=d;
-  const sim=document.getElementById('simdi');let h='<h3>Şu an toplanabilir · '+AYAD[AY]+'</h3>';
-  const ana=Object.keys(TUR).filter(k=>sezonda(TUR[k])&&!TUR[k].kayitYok);
-  ana.forEach(k=>{const t=TUR[k];const L3=d.noktalar.map(p=>({p,r:puanla(p,k)})).sort((a,b)=>b.r.s-a.r.s);
-    h+='<div class="kart"><div class="bas"><img src="foto/'+k+'_kare.jpg" alt=""><div><b>'+t.ad+'</b><div class="alt">Sezonun bitmesine '+kalanGun(t)+' gün · '+t.sezonK+'</div></div></div>';
-    if(t.ph||t.agac){h+='<ul>'+L3.slice(0,3).map((x,i)=>'<li><a href="#" onclick="goster(\''+k+'\');return false">'+(i+1)+'. '+(x.p.ilce?x.p.ilce+', ':'')+x.p.il+' · '+x.r.s+'/'+x.r.max+'</a></li>').join('')+'</ul><button onclick="goster(\''+k+'\')">Tüm öneriler ve nedenleri</button>';}
-    else h+='<div class="alt" style="margin-top:6px">Toprak ve ağaç isteği için tabloda kaynak yok, bölge puanlanamıyor. Kayıtlı iller: '+t.il.join(', ')+' [1]. Sakarya, Düzce ve Bolu\'da kayıt yok.</div>';
-    h+='</div>';});
-  const sol=Object.keys(TUR).filter(k=>TUR[k].kayitYok&&sezonda(TUR[k])).map(k=>TUR[k].ad+': sezonda ama Türkiye\'de kayıt yok')
-    .concat(Object.keys(TUR).filter(k=>TUR[k].sezon===null).map(k=>TUR[k].ad+': sezon bilgisi yok'));
-  h+=sol.map(x=>'<div class="kart" style="opacity:.55;font-size:13px">'+x+'</div>').join('');
-  sim.innerHTML=h;
-  if(ana.find(k=>TUR[k].ph))goster(ana.find(k=>TUR[k].ph));
-});
-let isaret=[];
-function goster(k){const t=TUR[k];
-  document.getElementById('not').innerHTML='<b>'+t.ad+'</b> için öneriler. Puan sadece kaynağı olan ölçütlerden: toprak pH (3), geniş yapraklı orman (2), toplam kireç (1), yıllık yağış (1), yıllık sıcaklık (1), il kaydı (1). Eşikler oluşum koşulları tablosundan ([S] Stobbe ve ark. 2013, [5] Romanya derlemesi); kullanıcı onayı bekliyor. İlk deneme alanı Sakarya, Düzce ve Bolu ('+D.noktalar.length+' nokta, 20 km aralıklı). Veri tarihi '+D.tarih+', hava '+D.aralik[0]+' – '+D.aralik[1]+'. Tahmindir, saha kontrolü gerekir.';
-  isaret.forEach(m=>m.remove());isaret=[];const liste=document.getElementById('liste');liste.innerHTML='';
-  const L2=D.noktalar.map(p=>({p,r:puanla(p,k)})).sort((a,b)=>b.r.s-a.r.s||(b.p.genis||0)-(a.p.genis||0)).slice(0,8);const b=[];
-  L2.forEach((x,i)=>{const p=x.p,r=x.r,id='k'+i;b.push([p.lat,p.lon]);
-    isaret.push(L.marker([p.lat,p.lon],{icon:L.icon({iconUrl:'fikon/'+k+'.png',iconSize:[34,34],className:'yuv'})}).addTo(map).bindTooltip(String(i+1),{permanent:true,direction:'top'}).on('click',()=>document.getElementById(id).scrollIntoView({behavior:'smooth'})));
-    const el=document.createElement('div');el.className='kart';el.id=id;
-    el.innerHTML='<div class="bas"><img src="foto/'+k+'_kare.jpg" alt=""><div><b>'+(i+1)+'. '+(p.ilce?p.ilce+', ':'')+p.il+'</b><div class="alt">'+p.lat.toFixed(3)+', '+p.lon.toFixed(3)+' · '+p.rakim+' m</div></div><div class="puan">'+r.s+'/'+r.max+'</div></div><ul>'+r.n.map(z=>'<li><span class="i">'+z[0]+'</span>'+z[1]+(z[2]?' <span class="k">('+z[2]+')</span>':'')+'</li>').join('')+'</ul><a href="./?lat='+p.lat+'&lon='+p.lon+'"><button>Haritada aç</button></a>';
-    liste.appendChild(el);});
-  map.fitBounds(b,{padding:[25,25]});
+let D,secili='simdi',isaret=[];
+function sirala(k){return D.noktalar.map(p=>({p,r:puanla(p,k)})).sort((a,b)=>b.r.s/b.r.max-a.r.s/a.r.max||(b.p.genis||0)-(a.p.genis||0));}
+function secici(){const d=document.getElementById('secici');
+  d.innerHTML='<button data-k="simdi" class="'+(secili==='simdi'?'on':'')+'">🍄 Şu an sezonda</button>'+SIRA.map(k=>{const t=TUR[k],sb=sezonBilgi(t),sol=!sezonda(t)||t.kayitYok;
+    return '<button data-k="'+k+'" class="'+(secili===k?'on ':'')+(sol&&secili!==k?'soluk':'')+'"><img src="fikon/'+k+'.png" alt="">'+t.ad+'</button>';}).join('');
+  d.querySelectorAll('button').forEach(b=>b.onclick=()=>{secili=b.dataset.k;ciz();});}
+function turKart(k,ust){const t=TUR[k],sb=sezonBilgi(t),L3=sirala(k).slice(0,3);
+  const ser=sb.top?'<div style="height:6px;background:#eee;border-radius:3px;margin-top:6px"><div style="height:6px;width:'+Math.round(100*sb.gecen/sb.top)+'%;background:#C9A24A;border-radius:3px"></div></div>':'';
+  const alt=sb.kalan!=null?'Sezonun bitmesine '+sb.kalan+' gün':(sb.baslamaya?'Sezonun başlamasına '+sb.baslamaya+' gün':'');
+  return '<div class="kart'+((!sezonda(t)||t.kayitYok)&&ust?' soluk':'')+'"><div class="bas"><img src="foto/'+k+'_kare.jpg" alt="" style="border-color:'+(RENK[k]||'#6b4a2b')+'"><div><b>'+t.ad+'</b> <i class="alt">'+t.lat+'</i><br>'+rozet(sb.dur)+(t.kayitYok?rozet('tr-kayit-yok'):'')+'<div class="alt">'+alt+' · '+t.sezonK+'</div>'+(t.not?'<div class="alt">'+t.not+'</div>':'')+'</div></div>'+ser+
+   '<ul>'+L3.map((x,i)=>'<li><a href="#" onclick="secili=\''+k+'\';ciz();return false">'+(i+1)+'. '+(x.p.ilce?x.p.ilce+', ':'')+x.p.il+' · '+x.r.s+'/'+x.r.max+'</a></li>').join('')+'</ul></div>';}
+let RENK={};
+function ciz(){secici();isaret.forEach(m=>m.remove());isaret=[];const liste=document.getElementById('liste'),sim=document.getElementById('simdi'),not=document.getElementById('not');liste.innerHTML='';const b=[];
+  const ortak='Puan sadece kaynağı olan ölçütlerden; her satırın kaynağı yanında. Eşikler oluşum koşulları tablosundan, kullanıcı onayı bekliyor. Deneme alanı Sakarya, Düzce ve Bolu ('+D.noktalar.length+' nokta, 20 km aralıklı). Veri tarihi '+D.tarih+'. Tahmindir, saha kontrolü gerekir.';
+  if(secili==='simdi'){
+    const ana=SIRA.filter(k=>sezonda(TUR[k])&&!TUR[k].kayitYok),diger=SIRA.filter(k=>!ana.includes(k));
+    sim.innerHTML='<h3>Şu an toplanabilir · '+AYAD[BUGUN.getMonth()+1]+'</h3>'+ana.map(k=>turKart(k,true)).join('')+'<h3 style="font-size:14px;color:#7a7364">Diğer türler</h3>'+diger.map(k=>turKart(k,true)).join('');
+    not.innerHTML='Haritada şu an sezonda olan türlerin en iyi 5 noktası var. '+ortak;
+    ana.forEach(k=>sirala(k).slice(0,5).forEach(x=>{b.push([x.p.lat,x.p.lon]);isaret.push(L.marker([x.p.lat,x.p.lon],{icon:L.icon({iconUrl:'fikon/'+k+'.png',iconSize:[32,32],className:'yuv'})}).addTo(map).bindPopup('<b>'+TUR[k].ad+'</b><br>'+(x.p.ilce?x.p.ilce+', ':'')+x.p.il+' · '+x.r.s+'/'+x.r.max+'<br><a href="#" onclick="secili=\''+k+'\';ciz();return false">Nedenleri gör</a>'));}));
+  } else {
+    const k=secili,t=TUR[k];sim.innerHTML=turKart(k,false);
+    not.innerHTML='<b>'+t.ad+'</b> için öneriler. '+(!sezonda(t)?'Bu tür şu an sezon dışı. ':'')+(t.kayitYok?'Türkiye\'de doğal kaydı yok. ':'')+ortak;
+    sirala(k).slice(0,8).forEach((x,i)=>{const p=x.p,r=x.r,id='k'+i;b.push([p.lat,p.lon]);
+      isaret.push(L.marker([p.lat,p.lon],{opacity:sezonda(t)&&!t.kayitYok?1:0.55,icon:L.icon({iconUrl:'fikon/'+k+'.png',iconSize:[34,34],className:'yuv'})}).addTo(map).bindTooltip(String(i+1),{permanent:true,direction:'top'}).on('click',()=>document.getElementById(id).scrollIntoView({behavior:'smooth'})));
+      const el=document.createElement('div');el.className='kart';el.id=id;
+      el.innerHTML='<div class="bas"><div><b>'+(i+1)+'. '+(p.ilce?p.ilce+', ':'')+p.il+'</b><div class="alt">'+p.lat.toFixed(3)+', '+p.lon.toFixed(3)+' · '+p.rakim+' m</div></div><div class="puan">'+r.s+'/'+r.max+'</div></div><ul>'+r.n.map(z=>'<li><span class="i">'+z[0]+'</span>'+z[1]+(z[2]?' <span class="k">('+z[2]+')</span>':'')+'</li>').join('')+'</ul><a href="./?lat='+p.lat+'&lon='+p.lon+'"><button>Haritada aç</button></a>';
+      liste.appendChild(el);});
+  }
+  if(b.length)map.fitBounds(b,{padding:[25,25]});
 }
+Promise.all([fetch('oneri.json').then(r=>r.json()),fetch('rozetler.json').then(r=>r.json()),fetch('harita-renkleri.json').then(r=>r.json())]).then(([d,rz,hr])=>{D=d;RZ=rz;for(const k in hr)RENK[k]=hr[k]&&hr[k].bolge_dolgu;ciz();});
 </script></body></html>
