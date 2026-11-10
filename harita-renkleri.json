@@ -1,0 +1,76 @@
+{
+  "magnatum": {
+    "latince": "Tuber magnatum",
+    "turkce": "Beyaz trüf",
+    "bolge_dolgu": "#C9A24A",
+    "dolgu_opaklik": 0.35,
+    "bolge_cizgi": "#C9A24A",
+    "cizgi_kalinlik": 1.5,
+    "tr_kaydi": false,
+    "ikon": "ikon/magnatum.svg",
+    "isaretci": "isaretci/magnatum.svg"
+  },
+  "aestivum": {
+    "latince": "Tuber aestivum",
+    "turkce": "Yaz / Burgonya trüfü",
+    "bolge_dolgu": "#A8443A",
+    "dolgu_opaklik": 0.35,
+    "bolge_cizgi": "#A8443A",
+    "cizgi_kalinlik": 1.5,
+    "tr_kaydi": true,
+    "ikon": "ikon/aestivum.svg",
+    "isaretci": "isaretci/aestivum.svg"
+  },
+  "melanosporum": {
+    "latince": "Tuber melanosporum",
+    "turkce": "Siyah kış trüfü (Périgord)",
+    "bolge_dolgu": "#6B4C8A",
+    "dolgu_opaklik": 0.35,
+    "bolge_cizgi": "#6B4C8A",
+    "cizgi_kalinlik": 1.5,
+    "tr_kaydi": false,
+    "ikon": "ikon/melanosporum.svg",
+    "isaretci": "isaretci/melanosporum.svg"
+  },
+  "borchii": {
+    "latince": "Tuber borchii",
+    "turkce": "Bianchetto",
+    "bolge_dolgu": "#6E9A4E",
+    "dolgu_opaklik": 0.35,
+    "bolge_cizgi": "#6E9A4E",
+    "cizgi_kalinlik": 1.5,
+    "tr_kaydi": true,
+    "ikon": "ikon/borchii.svg",
+    "isaretci": "isaretci/borchii.svg"
+  },
+  "brumale": {
+    "latince": "Tuber brumale",
+    "turkce": "Kış trüfü",
+    "bolge_dolgu": "#3F7397",
+    "dolgu_opaklik": 0.35,
+    "bolge_cizgi": "#3F7397",
+    "cizgi_kalinlik": 1.5,
+    "tr_kaydi": true,
+    "ikon": "ikon/brumale.svg",
+    "isaretci": "isaretci/brumale.svg"
+  },
+  "terfezia": {
+    "latince": "Terfezia boudieri / claveryi",
+    "turkce": "Keme (çöl trüfü)",
+    "bolge_dolgu": "#D08C3F",
+    "dolgu_opaklik": 0.35,
+    "bolge_cizgi": "#D08C3F",
+    "cizgi_kalinlik": 1.5,
+    "tr_kaydi": true,
+    "ikon": "ikon/terfezia.svg",
+    "isaretci": "isaretci/terfezia.svg"
+  },
+  "_ortak": {
+    "kara": "#EFE9DC",
+    "deniz": "#DFE8E4",
+    "il_siniri": "#B0A890",
+    "secili_nokta": "#3D5A40",
+    "tr_kaydi_yok_opaklik": 0.45,
+    "not_": "TR kaydı olmayan türlerde (magnatum, melanosporum) bölge dolgusu taralı ve soluk gösterilsin."
+  }
+}

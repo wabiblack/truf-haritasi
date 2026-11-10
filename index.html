@@ -6,25 +6,78 @@
 <title>Trüf Haritası – deneme</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-html,body{margin:0;height:100%;font-family:system-ui,sans-serif}
-#bar{position:absolute;top:0;left:0;right:0;z-index:1000;background:#3b2a1a;color:#fff;padding:10px 14px;font-size:15px}
-#map{position:absolute;top:40px;bottom:0;left:0;right:0}
-#info{position:absolute;bottom:12px;left:12px;right:12px;z-index:1000;background:#fff;border-radius:10px;padding:10px 12px;box-shadow:0 2px 8px #0004;font-size:14px}
+html,body{margin:0;height:100%;font-family:system-ui,sans-serif;background:#f4efe6}
+#bar{position:absolute;top:0;left:0;right:0;z-index:1000;background:#3b2a1a;color:#fff;padding:8px 12px}
+#bar b{font-size:15px}
+#turler{display:flex;gap:6px;overflow-x:auto;margin-top:6px;padding-bottom:2px}
+.tur{flex:0 0 auto;display:flex;align-items:center;gap:4px;background:#ffffff1f;border-radius:14px;padding:3px 8px 3px 3px;font-size:12px;white-space:nowrap}
+.tur img{width:22px;height:22px}
+#map{position:absolute;top:78px;bottom:0;left:0;right:0}
+#panel{position:absolute;bottom:0;left:0;right:0;z-index:1000;background:#fff;border-radius:16px 16px 0 0;box-shadow:0 -2px 10px #0003;padding:10px 14px 14px;max-height:58%;overflow-y:auto;font-size:14px;color:#3b2a1a}
+#panel h3{margin:4px 0 8px;font-size:15px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.kutu{background:#f4efe6;border-radius:10px;padding:6px 8px}
+.kutu span{display:block;font-size:11px;color:#7a6250}
+.kutu b{font-size:16px}
+canvas{width:100%!important;height:140px!important;margin-top:6px}
+#kapat{float:right;border:0;background:#eee;border-radius:12px;padding:2px 10px;font-size:13px}
+.not{font-size:11px;color:#7a6250;margin-top:6px}
 </style>
 </head>
 <body>
-<div id="bar">🍄 Trüf Haritası · deneme sürümü</div>
+<div id="bar"><b>🍄 Trüf Haritası</b> <small>· deneme</small><div id="turler"></div></div>
 <div id="map"></div>
-<div id="info">Haritada bir yere dokun.</div>
+<div id="panel">Haritada bir yere dokun; o noktanın son 90 günlük yağış, nem, sıcaklık ve basınç verisi çıkacak.</div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
-const map=L.map('map').setView([39.0,35.2],6);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(map);
-let m;
-map.on('click',e=>{
+const LOADER="<!-- Tr\u00fcf y\u00fckleniyor animasyonu: saf CSS+SVG, harici ba\u011f\u0131ml\u0131l\u0131k yok -->\n<div class=\"truf-loader\" role=\"status\" aria-label=\"Y\u00fckleniyor\">\n  <svg viewBox=\"0 0 120 120\" width=\"96\" height=\"96\" aria-hidden=\"true\">\n    <g class=\"drops\">\n      <path class=\"drop d1\" d=\"M30 10 q4 8 0 12 q-4 -4 0 -12z\"/>\n      <path class=\"drop d2\" d=\"M60 4 q4 8 0 12 q-4 -4 0 -12z\"/>\n      <path class=\"drop d3\" d=\"M90 10 q4 8 0 12 q-4 -4 0 -12z\"/>\n    </g>\n    <ellipse class=\"ground\" cx=\"60\" cy=\"100\" rx=\"44\" ry=\"6\"/>\n    <g class=\"truffle\">\n      <circle cx=\"60\" cy=\"78\" r=\"20\"/>\n      <circle class=\"spot\" cx=\"52\" cy=\"72\" r=\"2.5\"/>\n      <circle class=\"spot\" cx=\"66\" cy=\"70\" r=\"2\"/>\n      <circle class=\"spot\" cx=\"62\" cy=\"84\" r=\"2.5\"/>\n      <circle class=\"spot\" cx=\"50\" cy=\"84\" r=\"1.8\"/>\n    </g>\n  </svg>\n  <span class=\"truf-loader-text\">Hava verisi y\u00fckleniyor\u2026</span>\n</div>\n<style>\n.truf-loader{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px;font:14px system-ui,sans-serif;color:#5b4636}\n.truf-loader .ground{fill:#8a6a4f;opacity:.35}\n.truf-loader .truffle circle{fill:#4a3426}\n.truf-loader .truffle .spot{fill:#7a5a44}\n.truf-loader .truffle{transform-origin:60px 98px;animation:truf-bob 1.2s ease-in-out infinite}\n.truf-loader .drop{fill:#4aa3df;opacity:0;animation:truf-fall 1.2s linear infinite}\n.truf-loader .d2{animation-delay:.4s}.truf-loader .d3{animation-delay:.8s}\n@keyframes truf-bob{0%,100%{transform:translateY(0) scale(1,1)}45%{transform:translateY(-6px) scale(.97,1.03)}60%{transform:translateY(0) scale(1.05,.95)}}\n@keyframes truf-fall{0%{opacity:0;transform:translateY(0)}15%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translateY(55px)}}\n@media (prefers-reduced-motion:reduce){.truf-loader .truffle,.truf-loader .drop{animation:none}.truf-loader .drop{opacity:1}}\n</style>\n";
+const map=L.map('map',{zoomControl:false,zoomSnap:0.25});map.fitBounds([[35.8,25.7],[42.1,44.8]]);
+L.control.zoom({position:'topright'}).addTo(map);
+const topo=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'© OpenStreetMap, SRTM | © OpenTopoMap'});
+const uydu=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,attribution:'© Esri'});
+const sokak=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© OpenStreetMap © CARTO'});
+topo.addTo(map);
+L.control.layers({'Arazi':topo,'Uydu':uydu,'Sokak':sokak},null,{position:'topright'}).addTo(map);
+fetch('harita-renkleri.json').then(r=>r.json()).then(t=>{
+  const d=document.getElementById('turler');
+  for(const k in t){const e=document.createElement('div');e.className='tur';e.innerHTML='<img src="ikon/'+k+'.svg" alt="">'+t[k].turkce;d.appendChild(e);}
+});
+const panel=document.getElementById('panel');
+let m,charts=[];
+const ort=a=>{a=a.filter(x=>x!=null);return a.length?a.reduce((s,x)=>s+x,0)/a.length:null};
+const top_=a=>a.filter(x=>x!=null).reduce((s,x)=>s+x,0);
+const f=(x,d=0)=>x==null?'–':x.toFixed(d).replace('.',',');
+function grafik(id,tip,etiket,veri,renk){charts.push(new Chart(document.getElementById(id),{type:tip,data:{labels:veri.l,datasets:[{label:etiket,data:veri.v,backgroundColor:renk,borderColor:renk,pointRadius:0,borderWidth:tip==='line'?2:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{boxWidth:10,font:{size:11}}}},scales:{x:{ticks:{maxTicksLimit:4,font:{size:10}}},y:{ticks:{font:{size:10}}}}}}));}
+map.on('click',async e=>{
   const {lat,lng}=e.latlng;
   if(m) m.setLatLng(e.latlng); else m=L.marker(e.latlng).addTo(map);
-  document.getElementById('info').textContent='Dokunduğun nokta: '+lat.toFixed(4)+', '+lng.toFixed(4);
+  panel.innerHTML=LOADER;
+  const gunStr=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+  const bit=new Date(Date.now()-864e5), bas=new Date(Date.now()-90*864e5);
+  const u='https://archive-api.open-meteo.com/v1/archive?latitude='+lat.toFixed(4)+'&longitude='+lng.toFixed(4)+'&start_date='+gunStr(bas)+'&end_date='+gunStr(bit)+'&daily=precipitation_sum,temperature_2m_mean,relative_humidity_2m_mean,pressure_msl_mean&timezone=Europe%2FIstanbul';
+  const sz=map.getSize(), cp=map.latLngToContainerPoint(e.latlng); map.panBy([cp.x-sz.x/2, cp.y-sz.y*0.2]);
+  try{
+    const r=await fetch(u); if(!r.ok) throw new Error(r.status);
+    const j=await r.json(), dd=j.daily, n=dd.time.length;
+    const s=k=>dd[k].slice(0,n), gun=dd.time.slice(0,n).map(x=>x.slice(5).split('-').reverse().join('.'));
+    const y=s('precipitation_sum'),h=s('relative_humidity_2m_mean'),t=s('temperature_2m_mean'),p=s('pressure_msl_mean');
+    charts.forEach(c=>c.destroy());charts=[];
+    panel.innerHTML='<button id="kapat">Kapat</button><h3>📍 '+lat.toFixed(3)+', '+lng.toFixed(3)+' · son 90 gün</h3>'+
+    '<div class="grid"><div class="kutu"><span>Toplam yağış (90 gün)</span><b>'+f(top_(y))+' mm</b></div>'+
+    '<div class="kutu"><span>Son 30 gün yağış</span><b>'+f(top_(y.slice(-30)))+' mm</b></div>'+
+    '<div class="kutu"><span>Ortalama nem</span><b>%'+f(ort(h))+'</b></div>'+
+    '<div class="kutu"><span>Ortalama sıcaklık</span><b>'+f(ort(t),1)+' °C</b></div>'+
+    '<div class="kutu"><span>Ortalama basınç</span><b>'+f(ort(p))+' hPa</b></div>'+
+    '<div class="kutu"><span>Yağışlı gün (≥1 mm)</span><b>'+y.filter(x=>x>=1).length+'</b></div></div>'+
+    '<canvas id="g1"></canvas><canvas id="g2"></canvas><canvas id="g3"></canvas><canvas id="g4"></canvas>'+
+    '<div class="not">Kaynak: Open-Meteo, günlük model verisi ('+dd.time[0]+' – '+dd.time[n-1]+'). Trüf bölge bilgileri tablo onaylanınca eklenecek.</div>';
+    document.getElementById('kapat').onclick=()=>{panel.innerHTML='Haritada bir yere dokun.';};
+    grafik('g1','bar','Günlük yağış (mm)',{l:gun,v:y},'#3F7397');
+    grafik('g2','line','Nem (%)',{l:gun,v:h},'#6E9A4E');
+    grafik('g3','line','Sıcaklık (°C)',{l:gun,v:t},'#A8443A');
+    grafik('g4','line','Basınç (hPa)',{l:gun,v:p},'#6B4C8A');
+  }catch(err){panel.innerHTML='Hava verisi alınamadı ('+err.message+'). Tekrar dokunmayı dene.';}
 });
 </script>
 </body>
