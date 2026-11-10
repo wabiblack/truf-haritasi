@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trüf Haritası – deneme</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+html,body{margin:0;height:100%;font-family:system-ui,sans-serif}
+#bar{position:absolute;top:0;left:0;right:0;z-index:1000;background:#3b2a1a;color:#fff;padding:10px 14px;font-size:15px}
+#map{position:absolute;top:40px;bottom:0;left:0;right:0}
+#info{position:absolute;bottom:12px;left:12px;right:12px;z-index:1000;background:#fff;border-radius:10px;padding:10px 12px;box-shadow:0 2px 8px #0004;font-size:14px}
+</style>
+</head>
+<body>
+<div id="bar">🍄 Trüf Haritası · deneme sürümü</div>
+<div id="map"></div>
+<div id="info">Haritada bir yere dokun.</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const map=L.map('map').setView([39.0,35.2],6);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(map);
+let m;
+map.on('click',e=>{
+  const {lat,lng}=e.latlng;
+  if(m) m.setLatLng(e.latlng); else m=L.marker(e.latlng).addTo(map);
+  document.getElementById('info').textContent='Dokunduğun nokta: '+lat.toFixed(4)+', '+lng.toFixed(4);
+});
+</script>
+</body>
+</html>
