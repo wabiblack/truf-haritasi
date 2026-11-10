@@ -44,7 +44,23 @@ ogm.on('tileerror',()=>{ogmHata++;if(ogmHata===3&&!ogmOk)uyar('OGM meşcere katm
 ogm.on('tileload',()=>{ogmOk++;});
 const OrmanTipi=L.TileLayer.extend({getTileUrl(c){const z=this._getZoomForUrl?this._getZoomForUrl():c.z;const m=L.CRS.EPSG3857,s=256;const nw=m.project(map.unproject(L.point(c.x*s,c.y*s),c.z),c.z);const a=L.CRS.EPSG3857.pointToLatLng(L.point(c.x*s,c.y*s),c.z),b=L.CRS.EPSG3857.pointToLatLng(L.point((c.x+1)*s,(c.y+1)*s),c.z);const p1=L.CRS.EPSG3857.project(a),p2=L.CRS.EPSG3857.project(b);return 'https://image.discomap.eea.europa.eu/arcgis/rest/services/GioLandPublic/HRL_ForestType_2018/ImageServer/exportImage?bbox='+p1.x+','+p2.y+','+p2.x+','+p1.y+'&bboxSR=3857&imageSR=3857&size=256,256&format=png&f=image';}});
 const ormanTipi=new OrmanTipi('',{opacity:0.65,attribution:'Orman tipi © Copernicus HRL 2018'});
-L.control.layers({'Arazi (topoğrafik)':topo,'Uydu':uydu,'Sokak':sokak},{'Orman meşcere (OGM)':ogm,'Geniş / iğne yapraklı orman (Copernicus)':ormanTipi},{position:'topright'}).addTo(map);
+const TB={kuzey:42.15833,guney:35.75833,bati:25.59167,dogu:44.89167,satir:768,sutun:2316};
+const ov=(k,kay)=>L.imageOverlay('toprak/'+k+'.png',[[TB.guney,TB.bati],[TB.kuzey,TB.dogu]],{opacity:0.75,attribution:kay});
+const FAO='Kireç, jips © FAO HWSD v2 (~1 km)',ISR='Toprak © ISRIC SoilGrids (5–15 cm)';
+const TK=[['kirec','Kireç (kalsiyum karbonat) %',FAO],['jips','Jips (kükürtlü mineral) %',FAO],['ph','Toprak pH',ISR],['kil','Kil %',ISR],['kum','Kum %',ISR],['oc','Organik karbon g/kg',ISR]];
+const TOPRAK={};TK.forEach(([k,ad,kay])=>TOPRAK[ad]=ov(k,kay));
+const kirecK=TOPRAK[TK[0][1]],jipsK=TOPRAK[TK[1][1]];
+L.control.layers({'Arazi (topoğrafik)':topo,'Uydu':uydu,'Sokak':sokak},Object.assign({'Orman meşcere (OGM)':ogm,'Geniş / iğne yapraklı orman (Copernicus)':ormanTipi},TOPRAK),{position:'topright',collapsed:true}).addTo(map);
+const lej=L.control({position:'topleft'});lej.onAdd=()=>{const d=L.DomUtil.create('div');d.id='lejant';d.style.cssText='margin-top:70px;background:#fffe;padding:6px 8px;border-radius:8px;font-size:11px;display:none;max-width:200px';return d;};lej.addTo(map);
+let SK=null;fetch('toprak/skala.json').then(r=>r.json()).then(j=>SK=j);
+function lejantGoster(){const d=document.getElementById('lejant');const a=[];
+ TK.forEach(([k,ad,kay])=>{if(map.hasLayer(TOPRAK[ad])&&SK)a.push('<b>'+ad+'</b><br>'+SK[k].esik.map((e,i)=>'<span style="display:inline-block;width:12px;height:10px;background:'+SK[k].renk[i]+'"></span> '+e+(i<SK[k].esik.length-1?'–'+SK[k].esik[i+1]:'+')).join('<br>')+'<br><span style="color:#777">'+kay+'</span>');});
+ d.innerHTML=a.join('<hr>');d.style.display=a.length?'block':'none';}
+map.on('overlayadd overlayremove',lejantGoster);
+// dokunulan noktada kireç/jips: FAO toprak birimi resminden oku
+let SMU=null,SMUC=null;fetch('toprak/smu.json').then(r=>r.json()).then(j=>SMU=j);
+(()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const x=c.getContext('2d');x.drawImage(im,0,0);SMUC=x.getImageData(0,0,c.width,c.height);};im.src='toprak/tr_smu.png';})();
+function toprakOku(lat,lng){if(!SMU||!SMUC)return null;const r=Math.floor((TB.kuzey-lat)*120),c=Math.floor((lng-TB.bati)*120);if(r<0||c<0||r>=TB.satir||c>=TB.sutun)return null;const i=(r*TB.sutun+c)*4,d=SMUC.data;if(d[i+3]===0)return null;return SMU[(d[i]<<8)|d[i+1]]||null;}
 function uyar(t){const d=document.createElement('div');d.textContent=t;d.style.cssText='position:absolute;top:86px;left:10px;right:60px;z-index:1100;background:#a8443a;color:#fff;padding:8px 10px;border-radius:10px;font-size:13px';document.body.appendChild(d);setTimeout(()=>d.remove(),7000);}
 fetch('harita-renkleri.json').then(r=>r.json()).then(t=>{
   const d=document.getElementById('turler');
@@ -66,13 +82,13 @@ map.on('click',async e=>{
   const sz=map.getSize(), cp=map.latLngToContainerPoint(e.latlng); map.panBy([cp.x-sz.x/2, cp.y-sz.y*0.2]);
   try{
     const [r,er]=await Promise.all([fetch(u),fetch('https://api.open-meteo.com/v1/elevation?latitude='+lat.toFixed(4)+'&longitude='+lng.toFixed(4)).catch(()=>null)]); if(!r.ok) throw new Error(r.status);
-    let rakim=null; try{rakim=(await er.json()).elevation[0];}catch(_){}
+    const tp=toprakOku(lat,lng);let rakim=null; try{rakim=(await er.json()).elevation[0];}catch(_){}
     const j=await r.json(), dd=j.daily, n=dd.time.length;
     const s=k=>dd[k].slice(0,n), gun=dd.time.slice(0,n).map(x=>x.slice(5).split('-').reverse().join('.'));
     const y=s('precipitation_sum'),h=s('relative_humidity_2m_mean'),t=s('temperature_2m_mean'),p=s('pressure_msl_mean');
     charts.forEach(c=>c.destroy());charts=[];
     panel.innerHTML='<button id="kapat">Kapat</button><h3>📍 '+lat.toFixed(3)+', '+lng.toFixed(3)+' · son 90 gün</h3>'+
-    '<div class="grid"><div class="kutu"><span>Yükseklik</span><b>'+f(rakim)+' m</b></div><div class="kutu"><span>Toplam yağış (90 gün)</span><b>'+f(top_(y))+' mm</b></div>'+
+    '<div class="grid"><div class="kutu"><span>Yükseklik</span><b>'+f(rakim)+' m</b></div><div class="kutu"><span>Kireç (FAO, ~1 km)</span><b>'+(tp&&tp[0]!=null?tp[0]+' %':'veri yok')+'</b></div><div class="kutu"><span>Jips (FAO, ~1 km)</span><b>'+(tp&&tp[1]!=null?tp[1]+' %':'veri yok')+'</b></div><div class="kutu"><span>Toplam yağış (90 gün)</span><b>'+f(top_(y))+' mm</b></div>'+
     '<div class="kutu"><span>Son 30 gün yağış</span><b>'+f(top_(y.slice(-30)))+' mm</b></div>'+
     '<div class="kutu"><span>Ortalama nem</span><b>%'+f(ort(h))+'</b></div>'+
     '<div class="kutu"><span>Ortalama sıcaklık</span><b>'+f(ort(t),1)+' °C</b></div>'+
